@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class ConferenceRoomFactory implements RoomFactory{
 
     public Room getRoom(String name, Integer maxCapacity, List<Interval> maintainedIntervals) {

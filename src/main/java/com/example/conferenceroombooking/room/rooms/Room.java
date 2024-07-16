@@ -4,6 +4,8 @@ import com.example.conferenceroombooking.interval.Interval;
 import com.example.conferenceroombooking.room.Meeting;
 import jakarta.validation.constraints.*;
 
+import java.util.List;
+
 public interface Room {
 
     @NotNull(message = "Room Name can't be null")

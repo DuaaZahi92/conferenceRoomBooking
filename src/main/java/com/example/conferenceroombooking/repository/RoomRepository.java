@@ -1,9 +1,10 @@
 package com.example.conferenceroombooking.repository;
 
+import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.room.rooms.Room;
 
-public interface RoomRepository {
-    Room roomSelector(Integer attendeeNumber);
+import java.util.List;
 
-    Room getRoomByName(String name);
+public interface RoomRepository {
+    List<Room> getRoomList() throws ConferenceRoomException;
 }

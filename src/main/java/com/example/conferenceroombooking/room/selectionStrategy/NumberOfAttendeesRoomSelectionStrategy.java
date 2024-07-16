@@ -1,19 +1,17 @@
 package com.example.conferenceroombooking.room.selectionStrategy;
 
+import com.example.conferenceroombooking.room.Meeting;
 import com.example.conferenceroombooking.room.rooms.Room;
-import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
 
-@Component("numberOfAttendeesStrategy")
-public class NumberOfAttendeesSelectionStrategy implements SelectionStrategy<Integer>{
+public class NumberOfAttendeesRoomSelectionStrategy implements RoomSelectionStrategy {
     @Override
-    public Room select(List<Room> list, Integer numberOfAttendees) {
+    public Room selectRoomForMeeting(List<Room> list, Meeting meeting) {
         return list.stream()
-                .filter(room -> room.getMaxCapacity() >= numberOfAttendees)
+                .filter(room -> room.getMaxCapacity() >= meeting.getAttendeeNumber())
                 .min(Comparator.comparingInt(Room::getMaxCapacity))
                 .orElse(null);
     }
-
 }

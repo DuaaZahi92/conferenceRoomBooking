@@ -18,5 +18,5 @@ public class Meeting implements Serializable {
     @NotNull(message = "Attendee number can't be null")
     @Min(value = 1, message = "Attendee number should have minimum of 1")
     private Integer attendeeNumber;
-    private Integer roomPreference;
+    private String roomPreference;
 }

@@ -1,13 +1,14 @@
 package com.example.conferenceroombooking.service;
 
+import com.example.conferenceroombooking.exception.ConferenceRoomException;
+import com.example.conferenceroombooking.repository.RoomRepository;
 import com.example.conferenceroombooking.room.Meeting;
-import com.example.conferenceroombooking.room.roomFactory.RoomFactory;
 import com.example.conferenceroombooking.room.roomFactory.RoomGroupFactory;
 import com.example.conferenceroombooking.room.rooms.Room;
-import com.example.conferenceroombooking.room.rooms.RoomType;
-import com.example.conferenceroombooking.room.selectionStrategy.NumberOfAttendeesSelectionStrategy;
-import com.example.conferenceroombooking.room.selectionStrategy.PreferenceSelectionStrategy;
-import com.example.conferenceroombooking.room.selectionStrategy.SelectionStrategy;
+import com.example.conferenceroombooking.room.selectionStrategy.NumberOfAttendeesRoomSelectionStrategy;
+import com.example.conferenceroombooking.room.selectionStrategy.PreferenceRoomSelectionStrategy;
+import com.example.conferenceroombooking.room.selectionStrategy.RoomSelectionStrategy;
+import com.example.conferenceroombooking.room.selectionStrategy.RoomSelectionStrategyFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,16 +19,11 @@ import java.util.Map;
 @Slf4j
 @Service
 public class RoomServiceImpl implements RoomService {
-
     @Autowired
-    RoomGroupFactory factory;
-
-    @Autowired
-    SelectionStrategy selectionStrategy;
+    RoomRepository roomRepository;
     @Override
-    public List<Room> getAvailableRooms() {
-        // builder pattern to create room beans
-        List<Room> rooms = factory.getAvailableRoomsPerType(RoomType.CONFERENCE);
+    public List<Room> getAvailableRooms() throws ConferenceRoomException {
+        List<Room> rooms = roomRepository.getRoomList();
         return rooms;
     }
 
@@ -37,14 +33,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void bookMeeting(Meeting meetingReq) {
-        List<Room> rooms = factory.getAvailableRoomsPerType(RoomType.CONFERENCE);
-        if (meetingReq.getRoomPreference() != null) {
-            selectionStrategy = new PreferenceSelectionStrategy();
-        } else {
-            selectionStrategy = new NumberOfAttendeesSelectionStrategy();
-        }
-        Room selectedRoom = selectionStrategy.select(rooms, meetingReq.getAttendeeNumber());
+    public void bookMeeting(Meeting meetingReq) throws ConferenceRoomException {
+        RoomSelectionStrategy roomSelectionStrategy = RoomSelectionStrategyFactory.getRoomSelectionStrategy(meetingReq);
+        List<Room> rooms = roomRepository.getRoomList();
+        Room selectedRoom = roomSelectionStrategy.selectRoomForMeeting(rooms, meetingReq);
         selectedRoom.bookRoom(meetingReq);
     }
 
