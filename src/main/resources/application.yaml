@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: conferenceRoomBooking
+server:
+  port: 9111
+  compression:
+    enabled: true
+
+
+config:
+  api-prefix: /api
+  available-rooms:
+    Amaze: 3,conference,9:00-9:15|13:00-13:15|17:00-17:15
+    Beauty: 7,conference,9:00-9:15|13:00-13:15|17:00-17:15
+    Inspire: 12,conference,9:00-9:15|13:00-13:15|17:00-17:15
+    Strive: 20,conference,9:00-9:15|13:00-13:15|17:00-17:15
+    office1: 10,office
+    office2: 10,office
+    canteen: 10,kitchen
