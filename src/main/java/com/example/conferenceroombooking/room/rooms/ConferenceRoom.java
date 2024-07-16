@@ -39,7 +39,7 @@ public class ConferenceRoom implements Room {
     }
 
     @Override
-    public Boolean bookRoom(Interval interval) {
+    public Boolean bookRoom(Meeting meeting) {
         return null;
     }
 }

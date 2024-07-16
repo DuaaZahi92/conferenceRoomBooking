@@ -1,6 +1,7 @@
 package com.example.conferenceroombooking.room.rooms;
 
 import com.example.conferenceroombooking.interval.Interval;
+import com.example.conferenceroombooking.room.Meeting;
 import jakarta.validation.constraints.*;
 
 public interface Room {
@@ -22,7 +23,7 @@ public interface Room {
 
     Boolean isAvailable(Interval interval);
 
-    Boolean bookRoom(Interval interval);
+    Boolean bookRoom(Meeting meeting);
 
 
 }

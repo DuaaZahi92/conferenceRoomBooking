@@ -1,6 +1,7 @@
 package com.example.conferenceroombooking.room.rooms;
 
 import com.example.conferenceroombooking.interval.Interval;
+import com.example.conferenceroombooking.room.Meeting;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
@@ -28,7 +29,8 @@ public class KitchenRoom implements Room {
     }
 
     @Override
-    public Boolean bookRoom(Interval interval) {
-        return false;
+    public Boolean bookRoom(Meeting meeting) {
+        return null;
     }
+
 }

@@ -8,12 +8,14 @@ import com.example.conferenceroombooking.room.rooms.RoomType;
 import com.example.conferenceroombooking.room.selectionStrategy.NumberOfAttendeesSelectionStrategy;
 import com.example.conferenceroombooking.room.selectionStrategy.PreferenceSelectionStrategy;
 import com.example.conferenceroombooking.room.selectionStrategy.SelectionStrategy;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class RoomServiceImpl implements RoomService {
 
@@ -26,7 +28,7 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> getAvailableRooms() {
         // builder pattern to create room beans
         List<Room> rooms = factory.getAvailableRoomsPerType(RoomType.CONFERENCE);
-        return null;
+        return rooms;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class RoomServiceImpl implements RoomService {
             selectionStrategy = new NumberOfAttendeesSelectionStrategy();
         }
         Room selectedRoom = selectionStrategy.select(rooms, meetingReq.getAttendeeNumber());
-
+        selectedRoom.bookRoom(meetingReq);
     }
 
     @Override
