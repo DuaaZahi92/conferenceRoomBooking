@@ -1,5 +1,7 @@
 package com.example.conferenceroombooking.room.rooms;
 
+import com.example.conferenceroombooking.exception.ConferenceRoomError;
+import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.interval.Interval;
 import com.example.conferenceroombooking.room.Meeting;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,7 +9,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -17,29 +23,33 @@ public class ConferenceRoom implements Room {
     String name;
     Integer maxCapacity;
     String location;
-
-    RoomType type;
-
-    List<Meeting> meetingOfTheDay;
+    Map<String,Meeting> meetingsOfTheDay = new ConcurrentHashMap<>();
 
     public ConferenceRoom(String name, Integer maxCapacity) {
         this.name = name;
         this.maxCapacity = maxCapacity;
-        this.type = RoomType.CONFERENCE;
     }
 
     @Override
     public String toString() {
-        return "Conference Room "+ this.name + " at" + this.location + ", fits " + this.maxCapacity + " attendees";
+        return "Conference Room "+ this.name + " at" + this.location + ", fits " + this.maxCapacity + " attendees.\n Today's meetings: " + this.meetingsOfTheDay;
     }
 
     @Override
     public Boolean isAvailable(Interval interval) {
-        return null;
+        Map.Entry<String, Meeting> found = meetingsOfTheDay.entrySet().stream()
+                .filter(entry -> entry.getValue().getInterval().isOverlaps(interval))
+                .findFirst()
+                .orElse(null);
+        return found == null;
     }
 
     @Override
-    public Boolean bookRoom(Meeting meeting) {
-        return null;
+    public void bookRoom(Meeting meeting) throws ConferenceRoomException {
+        Boolean isAvailable = isAvailable(meeting.getInterval());
+        if (!isAvailable)
+            throw new ConferenceRoomException(ConferenceRoomError.NOT_ALLOWED, "Meeting overlaps with another meeting");
+        this.getMeetingsOfTheDay().put(meeting.getKey(), meeting);
     }
+
 }

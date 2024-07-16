@@ -13,16 +13,15 @@ public enum ConferenceRoomError implements Serializable {
     GENERAL_ERROR( 1000, 400, "General Error occurred"),
     UNAUTHORIZED_ERROR(1001, 401, "Unauthorized to do action"),
     INVALID_VALUE(1002, 400, "Invalid value"),
-    CONFIGURATION_ERROR(1003, 500, "Configuration Error")
+    CONFIGURATION_ERROR(1003, 500, "Configuration Error"),
+    NOT_ALLOWED(1004, 400, "Not Allowed")
     ;
 
     @JsonValue
     private Integer code;
 
-    @JsonValue
     private Integer httpStatusCode;
 
-    @JsonValue
     private String message;
 
     private ConferenceRoomError(Integer code, Integer httpStatusCode, String message) {

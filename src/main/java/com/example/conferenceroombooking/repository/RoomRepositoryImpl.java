@@ -5,10 +5,8 @@ import com.example.conferenceroombooking.exception.ConferenceRoomError;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.interval.Interval;
 import com.example.conferenceroombooking.interval.TimeIntervalOfFifteenMinutes;
-import com.example.conferenceroombooking.room.roomFactory.ConferenceRoomFactory;
 import com.example.conferenceroombooking.room.roomFactory.RoomFactory;
 import com.example.conferenceroombooking.room.rooms.Room;
-import com.example.conferenceroombooking.room.rooms.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,8 +22,21 @@ public class RoomRepositoryImpl implements RoomRepository {
     @Autowired
     RoomFactory roomFactory;
 
+    private List<Room> rooms;
+
     @Override
     public List<Room> getRoomList() throws ConferenceRoomException {
+        if (rooms == null) {
+            synchronized (this) {
+                if (rooms == null) {
+                    rooms = fetchRoomsFromConfiguration();
+                }
+            }
+        }
+        return rooms;
+    }
+
+    List<Room> fetchRoomsFromConfiguration() throws ConferenceRoomException {
         List<Room> rooms = new ArrayList<>();
         Map<String, String> availableRoomsList = properties.getAvailableRooms();
         if (availableRoomsList == null)
@@ -37,10 +48,9 @@ public class RoomRepositoryImpl implements RoomRepository {
             if (roomConfig.size() < 2)
                 throw new ConferenceRoomException(ConferenceRoomError.CONFIGURATION_ERROR, "Room " + entry.getKey() + " configuration should include capacity and interval");
             Integer capacity = Integer.parseInt(roomConfig.get(0));
-
             List<Interval> maintenanceWindow = new ArrayList<>();
             try {
-                String[] intervals = roomConfig.get(2).split("|");
+                String[] intervals = roomConfig.get(1).split("\\|");
                 for (String interval : intervals) {
                     String[] startEnd = interval.split("-");
                     String start = startEnd[0];

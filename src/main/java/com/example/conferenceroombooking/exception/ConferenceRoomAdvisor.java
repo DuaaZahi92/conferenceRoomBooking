@@ -23,10 +23,11 @@ public class ConferenceRoomAdvisor {
 
 
     @ExceptionHandler({ConferenceRoomException.class})
-    protected ResponseEntity<BaseResponse> handleConferenceErrorException(ConferenceRoomException ex) {
-        BaseResponse response = BaseResponse.builder().build();
+    protected ResponseEntity<BaseResponse<Object>> handleConferenceErrorException(ConferenceRoomException ex) {
+        BaseResponse<Object> response = BaseResponse.builder().build();
         response.setStatus(ResponseStatus.OPERATION_FAIL);
-        response.setErrors(List.of(ex.getError()));
+        response.setError(ex.getError());
+        response.setMessage(ex.getMessage());
         log.error(ex.getMessage());
         return ResponseEntity.status(ex.getError().getHttpStatusCode()).body(response);
     }

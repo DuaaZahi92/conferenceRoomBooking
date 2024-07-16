@@ -1,12 +1,10 @@
 package com.example.conferenceroombooking.service;
 
+import com.example.conferenceroombooking.exception.ConferenceRoomError;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.repository.RoomRepository;
 import com.example.conferenceroombooking.room.Meeting;
-import com.example.conferenceroombooking.room.roomFactory.RoomGroupFactory;
 import com.example.conferenceroombooking.room.rooms.Room;
-import com.example.conferenceroombooking.room.selectionStrategy.NumberOfAttendeesRoomSelectionStrategy;
-import com.example.conferenceroombooking.room.selectionStrategy.PreferenceRoomSelectionStrategy;
 import com.example.conferenceroombooking.room.selectionStrategy.RoomSelectionStrategy;
 import com.example.conferenceroombooking.room.selectionStrategy.RoomSelectionStrategyFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +26,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Map<Room, Meeting> getRoomsMeetings() {
-        return null;
-    }
-
-    @Override
     public void bookMeeting(Meeting meetingReq) throws ConferenceRoomException {
         RoomSelectionStrategy roomSelectionStrategy = RoomSelectionStrategyFactory.getRoomSelectionStrategy(meetingReq);
         List<Room> rooms = roomRepository.getRoomList();
@@ -46,7 +39,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void deleteRoomMeeting(Integer meetingId) {
-
+    public void deleteRoomMeeting(String roomName, String meetingKey) throws ConferenceRoomException {
+        List<Room> rooms = roomRepository.getRoomList();
+        Room found = rooms.stream().filter(r -> r.getName().equalsIgnoreCase(roomName))
+                .findFirst().orElse(null);
+        if (found == null)
+            throw new ConferenceRoomException(ConferenceRoomError.INVALID_VALUE, "Not able to find room with name " + roomName);
+        found.getMeetingsOfTheDay().remove(meetingKey);
     }
 }

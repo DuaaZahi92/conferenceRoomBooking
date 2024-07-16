@@ -14,5 +14,5 @@ public interface RoomService {
 
     void editRoomMeeting(Meeting meetingReq);
 
-    void deleteRoomMeeting(Integer meetingId);
+    void deleteRoomMeeting(String roomName, String meetingKey) throws ConferenceRoomException;
 }

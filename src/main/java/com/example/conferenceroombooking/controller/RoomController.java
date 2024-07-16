@@ -1,6 +1,7 @@
 package com.example.conferenceroombooking.controller;
 
 import com.example.conferenceroombooking.controller.model.BaseResponse;
+import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.room.Meeting;
 import com.example.conferenceroombooking.room.rooms.Room;
 import com.example.conferenceroombooking.service.RoomService;
@@ -9,7 +10,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,14 +28,15 @@ import java.util.List;
 @Tag(name = "Room Controller", description = "This api is responsible to create meetings in conference rooms")
 public class RoomController extends BaseController {
 
+    @Autowired
     private RoomService roomService;
 
 
-    @GetMapping("/")
+    @GetMapping
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
-    public ResponseEntity<BaseResponse> getRooms(@RequestHeader HttpHeaders headers) {
+    public ResponseEntity<BaseResponse> getRooms(@RequestHeader HttpHeaders headers) throws ConferenceRoomException {
         List<Room> availableRooms = roomService.getAvailableRooms();
         return ResponseEntity.ok(BaseResponse.builder().data(availableRooms).build());
     }
@@ -40,7 +45,7 @@ public class RoomController extends BaseController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
-    public ResponseEntity<BaseResponse> bookRoom(@RequestHeader HttpHeaders headers, Meeting meetingReq) {
+    public ResponseEntity<BaseResponse> bookRoom(@RequestHeader HttpHeaders headers, @NotNull @Valid @RequestBody Meeting meetingReq) throws ConferenceRoomException {
         roomService.bookMeeting(meetingReq);
         return ResponseEntity.ok(BaseResponse.builder().build());
     }
@@ -49,17 +54,17 @@ public class RoomController extends BaseController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
-    public ResponseEntity<BaseResponse> editRoomMeeting(@RequestHeader HttpHeaders headers, Meeting meetingReq) {
+    public ResponseEntity<BaseResponse> editRoomMeeting(@RequestHeader HttpHeaders headers, @NotNull @Valid @RequestBody Meeting meetingReq) {
         roomService.editRoomMeeting(meetingReq);
         return ResponseEntity.ok(BaseResponse.builder().build());
     }
 
-    @DeleteMapping("/meeting/{id}")
+    @DeleteMapping("{roomName}/meeting/{meetingKey}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
-    public ResponseEntity<BaseResponse> deleteMeeting(@RequestHeader HttpHeaders headers, @PathVariable Integer id) {
-        roomService.deleteRoomMeeting(id);
+    public ResponseEntity<BaseResponse> deleteMeeting(@RequestHeader HttpHeaders headers, @PathVariable String roomName, @PathVariable String meetingKey) throws ConferenceRoomException {
+        roomService.deleteRoomMeeting(roomName, meetingKey);
         return ResponseEntity.ok(BaseResponse.builder().build());
     }
 

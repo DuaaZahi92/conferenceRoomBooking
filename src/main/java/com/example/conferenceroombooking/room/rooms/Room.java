@@ -1,10 +1,12 @@
 package com.example.conferenceroombooking.room.rooms;
 
+import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.interval.Interval;
 import com.example.conferenceroombooking.room.Meeting;
 import jakarta.validation.constraints.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Room {
 
@@ -17,15 +19,14 @@ public interface Room {
     @NotNull(message = "Room max capacity can't be null")
     Integer getMaxCapacity();
 
-    @NotNull(message = "Room type can't be null")
-    RoomType getType();
+    Map<String,Meeting> getMeetingsOfTheDay();
 
     @Max(255)
     String getLocation();
 
-    Boolean isAvailable(Interval interval);
+    Boolean isAvailable(Interval interval) throws ConferenceRoomException;
 
-    Boolean bookRoom(Meeting meeting);
+    void bookRoom(Meeting meeting) throws ConferenceRoomException;
 
 
 }
