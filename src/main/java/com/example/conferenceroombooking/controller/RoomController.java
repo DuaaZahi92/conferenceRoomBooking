@@ -55,6 +55,8 @@ public class RoomController extends BaseController {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     public ResponseEntity<BaseResponse> bookRoom(@RequestHeader HttpHeaders headers, @NotNull @Valid @RequestBody Meeting meetingReq) throws ConferenceRoomException {
+        //TODO put the full date and verification that he can only book for today/
+        //TODO how you will clear the list when the day rolls
         roomService.bookMeeting(meetingReq);
         return ResponseEntity.ok(BaseResponse.builder().build());
     }

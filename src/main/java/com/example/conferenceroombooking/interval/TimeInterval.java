@@ -1,5 +1,6 @@
 package com.example.conferenceroombooking.interval;
 
+import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -15,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 public class TimeInterval extends Interval{
 
     @JsonCreator
-    public TimeInterval(String start, String end) {
+    public TimeInterval(String start, String end) throws ConferenceRoomException {
         super(start,end);
     }
 

@@ -30,7 +30,6 @@ public class TimeIntervalOfFifteenMinutes extends TimeInterval {
         LocalTime startTime = LocalTime.parse(start,dtf);
         LocalTime endTime = LocalTime.parse(end,dtf);
         long minutesDifference = startTime.until(endTime, java.time.temporal.ChronoUnit.MINUTES);
-        //TODO not working
         if (minutesDifference % 15 != 0)
             throw new ConferenceRoomException(ConferenceRoomError.INVALID_VALUE, "End time has to be multiples of 15 minutes of start time");
     }

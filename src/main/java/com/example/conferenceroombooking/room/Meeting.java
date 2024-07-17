@@ -1,6 +1,7 @@
 package com.example.conferenceroombooking.room;
 
 import com.example.conferenceroombooking.interval.Interval;
+import com.example.conferenceroombooking.interval.TimeIntervalOfFifteenMinutes;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -20,7 +21,7 @@ public class Meeting implements Serializable {
     private String key;
     @JsonProperty("interval")
     @NotNull(message = "Meeting interval can't be null or empty")
-    private Interval interval;
+    private TimeIntervalOfFifteenMinutes interval;
     @JsonProperty("attendeeNumber")
     @NotNull(message = "Attendee number can't be null")
     @Min(value = 1, message = "Attendee number should have minimum of 1")
