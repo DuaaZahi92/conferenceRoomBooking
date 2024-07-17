@@ -26,6 +26,16 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public Room getRoomFromName(String roomName) throws ConferenceRoomException {
+        List<Room> rooms = roomRepository.getRoomList();
+        Room found = rooms.stream().filter(r -> r.getName().equalsIgnoreCase(roomName))
+                .findFirst().orElse(null);
+        if (found == null)
+            throw new ConferenceRoomException(ConferenceRoomError.INVALID_VALUE, "Not able to find room with name " + roomName);
+        return found;
+    }
+
+    @Override
     public void bookMeeting(Meeting meetingReq) throws ConferenceRoomException {
         RoomSelectionStrategy roomSelectionStrategy = RoomSelectionStrategyFactory.getRoomSelectionStrategy(meetingReq);
         List<Room> rooms = roomRepository.getRoomList();
@@ -34,17 +44,19 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void editRoomMeeting(Meeting meetingReq) {
-
+    public void editRoomMeeting(String roomName, String meetingKey, Meeting meetingReq) throws ConferenceRoomException {
+        Room found = getRoomFromName(roomName);
+        Meeting existingMeeting = found.getMeetingsOfTheDay().get(meetingKey);
+        if (existingMeeting == null)
+            throw new ConferenceRoomException(ConferenceRoomError.INVALID_VALUE, "Meeting with key " + meetingKey + " doesn't exist in room: " + roomName);
+        bookMeeting(meetingReq);
+        // if new meeting was booking, remove the old meeting
+        found.getMeetingsOfTheDay().remove(meetingKey);
     }
 
     @Override
     public void deleteRoomMeeting(String roomName, String meetingKey) throws ConferenceRoomException {
-        List<Room> rooms = roomRepository.getRoomList();
-        Room found = rooms.stream().filter(r -> r.getName().equalsIgnoreCase(roomName))
-                .findFirst().orElse(null);
-        if (found == null)
-            throw new ConferenceRoomException(ConferenceRoomError.INVALID_VALUE, "Not able to find room with name " + roomName);
+        Room found = getRoomFromName(roomName);
         found.getMeetingsOfTheDay().remove(meetingKey);
     }
 }

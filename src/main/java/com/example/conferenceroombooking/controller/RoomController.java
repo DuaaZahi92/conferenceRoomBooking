@@ -1,6 +1,7 @@
 package com.example.conferenceroombooking.controller;
 
 import com.example.conferenceroombooking.controller.model.BaseResponse;
+import com.example.conferenceroombooking.exception.ConferenceRoomError;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.room.Meeting;
 import com.example.conferenceroombooking.room.rooms.Room;
@@ -41,6 +42,14 @@ public class RoomController extends BaseController {
         return ResponseEntity.ok(BaseResponse.builder().data(availableRooms).build());
     }
 
+    @GetMapping("/{roomName}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> getRooms(@RequestHeader HttpHeaders headers, @PathVariable String roomName) throws ConferenceRoomException {
+        return ResponseEntity.ok(BaseResponse.builder().data(roomService.getRoomFromName(roomName)).build());
+    }
+
     @PostMapping("/meeting")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
@@ -50,16 +59,16 @@ public class RoomController extends BaseController {
         return ResponseEntity.ok(BaseResponse.builder().build());
     }
 
-    @PutMapping("/meeting")
+    @PutMapping("/{roomName}/meeting/{meetingKey}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
-    public ResponseEntity<BaseResponse> editRoomMeeting(@RequestHeader HttpHeaders headers, @NotNull @Valid @RequestBody Meeting meetingReq) {
-        roomService.editRoomMeeting(meetingReq);
+    public ResponseEntity<BaseResponse> editRoomMeeting(@RequestHeader HttpHeaders headers, @PathVariable String roomName, @PathVariable String meetingKey, @NotNull @Valid @RequestBody Meeting meetingReq) throws ConferenceRoomException {
+        roomService.editRoomMeeting(roomName, meetingKey, meetingReq);
         return ResponseEntity.ok(BaseResponse.builder().build());
     }
 
-    @DeleteMapping("{roomName}/meeting/{meetingKey}")
+    @DeleteMapping("/{roomName}/meeting/{meetingKey}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })

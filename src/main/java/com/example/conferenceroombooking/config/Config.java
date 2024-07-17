@@ -11,11 +11,6 @@ public class Config {
 
     @Autowired
     Properties properties;
-
-    /**
-     * Creates a room factory bean
-     * @return a room factory
-     */
     @Bean
     RoomFactory getRoomFactory() {
         return new ConferenceRoomFactory();
