@@ -1,0 +1,596 @@
+{
+	"info": {
+		"_postman_id": "2eb01d4e-6188-4275-b043-1893e8920539",
+		"name": "Conference Room booking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "1322471"
+	},
+	"item": [
+		{
+			"name": "room add meeting",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "client1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"interval\": {\n        \"start\": \"22:00\", //meeting start time in HH:MM format ( assuming same day and timezone of the office)\n        \"end\": \"23:30\" //meeting end time in HH:MM format ( assuming same day and timezone of the office)\n    },\n    \"attendeeNumber\": 3, // number of attendees. minimum 1, maximum 20\n    // \"roomPreference\": \"Strive\",  // optional parameter. if this room is available book it. if not given the system will choose best suited room. \n    \"title\": \"Onboarding of new hire\", // optional parameter. meeting title \n    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\" // optional parameter.  meeting description.\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:9111/api/room/meeting"
+			},
+			"response": [
+				{
+					"name": "fail - number of attendees is zero",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "client1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"interval\": {\n        \"start\": \"13:30\", //meeting start time in HH:MM format ( assuming same day and timezone of the office)\n        \"end\": \"14:00\" //meeting end time in HH:MM format ( assuming same day and timezone of the office)\n    },\n    \"attendeeNumber\": 0, // number of attendees. minimum 1, maximum 20\n    //\"roomPreference\": \"Strive\",  // optional parameter. if this room is available book it. if not given the system will choose best suited room. \n    \"title\": \"Onboarding of new hire\", // optional parameter. meeting title \n    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\" // optional parameter.  meeting description.\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:9111/api/room/meeting"
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "vary",
+							"value": "accept-encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Jul 2024 18:58:39 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"Operation Failed\",\n    \"errors\": [\n        {\n            \"code\": 1002,\n            \"message\": \"Invalid value\",\n            \"description\": \"Attendee number should have minimum of 1\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "fail - number of attendee is 100",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "client1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"interval\": {\n        \"start\": \"13:30\", //meeting start time in HH:MM format ( assuming same day and timezone of the office)\n        \"end\": \"14:00\" //meeting end time in HH:MM format ( assuming same day and timezone of the office)\n    },\n    \"attendeeNumber\": 100, // number of attendees. minimum 1, maximum 20\n    //\"roomPreference\": \"Strive\",  // optional parameter. if this room is available book it. if not given the system will choose best suited room. \n    \"title\": \"Onboarding of new hire\", // optional parameter. meeting title \n    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\" // optional parameter.  meeting description.\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:9111/api/room/meeting"
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "vary",
+							"value": "accept-encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Jul 2024 18:59:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"Operation Failed\",\n    \"errors\": [\n        {\n            \"code\": 1004,\n            \"message\": \"Not Allowed\",\n            \"description\": \"Can't find room that fits this number of attendees\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "success - 7 people",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "client1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"interval\": {\n        \"start\": \"15:00\", //meeting start time in HH:MM format ( assuming same day and timezone of the office)\n        \"end\": \"16:00\" //meeting end time in HH:MM format ( assuming same day and timezone of the office)\n    },\n    \"attendeeNumber\": 7, // number of attendees. minimum 1, maximum 20\n    //\"roomPreference\": \"Strive\",  // optional parameter. if this room is available book it. if not given the system will choose best suited room. \n    \"title\": \"Onboarding of new hire\", // optional parameter. meeting title \n    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\" // optional parameter.  meeting description.\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:9111/api/room/meeting"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "vary",
+							"value": "accept-encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Jul 2024 19:05:40 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"name\": \"Beauty\",\n        \"maxCapacity\": 7,\n        \"meetingsOfTheDay\": {\n            \"15:00_16:00\": {\n                \"key\": \"15:00_16:00\",\n                \"interval\": {\n                    \"start\": \"15:00\",\n                    \"end\": \"16:00\"\n                },\n                \"attendeeNumber\": 7,\n                \"title\": \"Onboarding of new hire\",\n                \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n            }\n        },\n        \"maintenanceTimeIntervals\": [\n            {\n                \"start\": \"09:00\",\n                \"end\": \"09:15\"\n            },\n            {\n                \"start\": \"13:00\",\n                \"end\": \"13:15\"\n            },\n            {\n                \"start\": \"17:00\",\n                \"end\": \"17:15\"\n            }\n        ]\n    }\n}"
+				},
+				{
+					"name": "fails overlaps maintainence time",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "client1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"interval\": {\n        \"start\": \"13:00\", //meeting start time in HH:MM format ( assuming same day and timezone of the office)\n        \"end\": \"13:30\" //meeting end time in HH:MM format ( assuming same day and timezone of the office)\n    },\n    \"attendeeNumber\": 3, // number of attendees. minimum 1, maximum 20\n    //\"roomPreference\": \"Strive\",  // optional parameter. if this room is available book it. if not given the system will choose best suited room. \n    \"title\": \"Onboarding of new hire\", // optional parameter. meeting title \n    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\" // optional parameter.  meeting description.\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:9111/api/room/meeting"
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "vary",
+							"value": "accept-encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Jul 2024 19:06:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"Operation Failed\",\n    \"errors\": [\n        {\n            \"code\": 1004,\n            \"message\": \"Not Allowed\",\n            \"description\": \"Meeting overlaps with another meeting or maintenance time\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "fail - time interval is not multiple of 15 min",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "client1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"interval\": {\n        \"start\": \"13:20\", //meeting start time in HH:MM format ( assuming same day and timezone of the office)\n        \"end\": \"13:30\" //meeting end time in HH:MM format ( assuming same day and timezone of the office)\n    },\n    \"attendeeNumber\": 3, // number of attendees. minimum 1, maximum 20\n    //\"roomPreference\": \"Strive\",  // optional parameter. if this room is available book it. if not given the system will choose best suited room. \n    \"title\": \"Onboarding of new hire\", // optional parameter. meeting title \n    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\" // optional parameter.  meeting description.\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:9111/api/room/meeting"
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "vary",
+							"value": "accept-encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Jul 2024 19:07:31 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"Operation Failed\",\n    \"errors\": [\n        {\n            \"code\": 1000,\n            \"message\": \"General Error occurred\",\n            \"description\": \"JSON parse error: Cannot construct instance of `com.example.conferenceroombooking.room.interval.TimeIntervalOfFifteenMinutes`, problem: End time has to be multiples of 15 minutes of start time\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "success - room perference",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "client1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"interval\": {\n        \"start\": \"22:00\", //meeting start time in HH:MM format ( assuming same day and timezone of the office)\n        \"end\": \"23:30\" //meeting end time in HH:MM format ( assuming same day and timezone of the office)\n    },\n    \"attendeeNumber\": 3, // number of attendees. minimum 1, maximum 20\n    \"roomPreference\": \"Strive\",  // optional parameter. if this room is available book it. if not given the system will choose best suited room. \n    \"title\": \"Onboarding of new hire\", // optional parameter. meeting title \n    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\" // optional parameter.  meeting description.\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:9111/api/room/meeting"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "vary",
+							"value": "accept-encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Jul 2024 19:08:42 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"name\": \"Strive\",\n        \"maxCapacity\": 20,\n        \"meetingsOfTheDay\": {\n            \"22:00_23:30\": {\n                \"key\": \"22:00_23:30\",\n                \"interval\": {\n                    \"start\": \"22:00\",\n                    \"end\": \"23:30\"\n                },\n                \"attendeeNumber\": 3,\n                \"roomPreference\": \"Strive\",\n                \"title\": \"Onboarding of new hire\",\n                \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n            }\n        },\n        \"maintenanceTimeIntervals\": [\n            {\n                \"start\": \"09:00\",\n                \"end\": \"09:15\"\n            },\n            {\n                \"start\": \"13:00\",\n                \"end\": \"13:15\"\n            },\n            {\n                \"start\": \"17:00\",\n                \"end\": \"17:15\"\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "room edit booking",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "client1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"interval\": {\n        \"start\": \"13:30\", //meeting start time in HH:MM format ( assuming same day and timezone of the office)\n        \"end\": \"14:00\" //meeting end time in HH:MM format ( assuming same day and timezone of the office)\n    },\n    \"attendeeNumber\": 12, // number of attendees. minimum 1, maximum 20\n    \"title\": \"Onboarding of new hire\", // optional parameter. meeting title \n    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\" // optional parameter.  meeting description.\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:9111/api/room/Amaze/meeting/13:15_13:30"
+			},
+			"response": [
+				{
+					"name": "success editing a meeting",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "client1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"interval\": {\n        \"start\": \"13:30\", //meeting start time in HH:MM format ( assuming same day and timezone of the office)\n        \"end\": \"14:00\" //meeting end time in HH:MM format ( assuming same day and timezone of the office)\n    },\n    \"attendeeNumber\": 12, // number of attendees. minimum 1, maximum 20\n    \"title\": \"Onboarding of new hire\", // optional parameter. meeting title \n    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\" // optional parameter.  meeting description.\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:9111/api/room/Amaze/meeting/13:15_13:30"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "vary",
+							"value": "accept-encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Jul 2024 19:11:39 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"name\": \"Inspire\",\n        \"maxCapacity\": 12,\n        \"meetingsOfTheDay\": {\n            \"13:30_14:00\": {\n                \"key\": \"13:30_14:00\",\n                \"interval\": {\n                    \"start\": \"13:30\",\n                    \"end\": \"14:00\"\n                },\n                \"attendeeNumber\": 12,\n                \"title\": \"Onboarding of new hire\",\n                \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n            }\n        },\n        \"maintenanceTimeIntervals\": [\n            {\n                \"start\": \"09:00\",\n                \"end\": \"09:15\"\n            },\n            {\n                \"start\": \"13:00\",\n                \"end\": \"13:15\"\n            },\n            {\n                \"start\": \"17:00\",\n                \"end\": \"17:15\"\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "room delete meeting",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "client1",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:9111/api/room/Amaze/meeting/15:00_16:00"
+			},
+			"response": [
+				{
+					"name": "deleting meeting in amaze 15:00_16:00",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "client1",
+								"type": "text"
+							}
+						],
+						"url": "http://localhost:9111/api/room/Amaze/meeting/15:00_16:00"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "vary",
+							"value": "accept-encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Jul 2024 19:09:43 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"name\": \"Amaze\",\n        \"maxCapacity\": 3,\n        \"meetingsOfTheDay\": {\n            \"13:15_13:30\": {\n                \"key\": \"13:15_13:30\",\n                \"interval\": {\n                    \"start\": \"13:15\",\n                    \"end\": \"13:30\"\n                },\n                \"attendeeNumber\": 3,\n                \"title\": \"Onboarding of new hire\",\n                \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n            },\n            \"13:30_14:00\": {\n                \"key\": \"13:30_14:00\",\n                \"interval\": {\n                    \"start\": \"13:30\",\n                    \"end\": \"14:00\"\n                },\n                \"attendeeNumber\": 3,\n                \"title\": \"Onboarding of new hire\",\n                \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n            }\n        },\n        \"maintenanceTimeIntervals\": [\n            {\n                \"start\": \"09:00\",\n                \"end\": \"09:15\"\n            },\n            {\n                \"start\": \"13:00\",\n                \"end\": \"13:15\"\n            },\n            {\n                \"start\": \"17:00\",\n                \"end\": \"17:15\"\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "all rooms availability",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "client1",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:9111/api/room"
+			},
+			"response": [
+				{
+					"name": "success - get all meetings",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "client1",
+								"type": "text"
+							}
+						],
+						"url": "http://localhost:9111/api/room"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "vary",
+							"value": "accept-encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Jul 2024 19:09:07 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"name\": \"Amaze\",\n            \"maxCapacity\": 3,\n            \"meetingsOfTheDay\": {\n                \"13:15_13:30\": {\n                    \"key\": \"13:15_13:30\",\n                    \"interval\": {\n                        \"start\": \"13:15\",\n                        \"end\": \"13:30\"\n                    },\n                    \"attendeeNumber\": 3,\n                    \"title\": \"Onboarding of new hire\",\n                    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n                },\n                \"13:30_14:00\": {\n                    \"key\": \"13:30_14:00\",\n                    \"interval\": {\n                        \"start\": \"13:30\",\n                        \"end\": \"14:00\"\n                    },\n                    \"attendeeNumber\": 3,\n                    \"title\": \"Onboarding of new hire\",\n                    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n                },\n                \"15:00_16:00\": {\n                    \"key\": \"15:00_16:00\",\n                    \"interval\": {\n                        \"start\": \"15:00\",\n                        \"end\": \"16:00\"\n                    },\n                    \"attendeeNumber\": 3,\n                    \"title\": \"Onboarding of new hire\",\n                    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n                }\n            },\n            \"maintenanceTimeIntervals\": [\n                {\n                    \"start\": \"09:00\",\n                    \"end\": \"09:15\"\n                },\n                {\n                    \"start\": \"13:00\",\n                    \"end\": \"13:15\"\n                },\n                {\n                    \"start\": \"17:00\",\n                    \"end\": \"17:15\"\n                }\n            ]\n        },\n        {\n            \"name\": \"Beauty\",\n            \"maxCapacity\": 7,\n            \"meetingsOfTheDay\": {\n                \"15:00_16:00\": {\n                    \"key\": \"15:00_16:00\",\n                    \"interval\": {\n                        \"start\": \"15:00\",\n                        \"end\": \"16:00\"\n                    },\n                    \"attendeeNumber\": 7,\n                    \"title\": \"Onboarding of new hire\",\n                    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n                }\n            },\n            \"maintenanceTimeIntervals\": [\n                {\n                    \"start\": \"09:00\",\n                    \"end\": \"09:15\"\n                },\n                {\n                    \"start\": \"13:00\",\n                    \"end\": \"13:15\"\n                },\n                {\n                    \"start\": \"17:00\",\n                    \"end\": \"17:15\"\n                }\n            ]\n        },\n        {\n            \"name\": \"Inspire\",\n            \"maxCapacity\": 12,\n            \"meetingsOfTheDay\": {},\n            \"maintenanceTimeIntervals\": [\n                {\n                    \"start\": \"09:00\",\n                    \"end\": \"09:15\"\n                },\n                {\n                    \"start\": \"13:00\",\n                    \"end\": \"13:15\"\n                },\n                {\n                    \"start\": \"17:00\",\n                    \"end\": \"17:15\"\n                }\n            ]\n        },\n        {\n            \"name\": \"Strive\",\n            \"maxCapacity\": 20,\n            \"meetingsOfTheDay\": {\n                \"22:00_23:30\": {\n                    \"key\": \"22:00_23:30\",\n                    \"interval\": {\n                        \"start\": \"22:00\",\n                        \"end\": \"23:30\"\n                    },\n                    \"attendeeNumber\": 3,\n                    \"roomPreference\": \"Strive\",\n                    \"title\": \"Onboarding of new hire\",\n                    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n                }\n            },\n            \"maintenanceTimeIntervals\": [\n                {\n                    \"start\": \"09:00\",\n                    \"end\": \"09:15\"\n                },\n                {\n                    \"start\": \"13:00\",\n                    \"end\": \"13:15\"\n                },\n                {\n                    \"start\": \"17:00\",\n                    \"end\": \"17:15\"\n                }\n            ]\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "room availability",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "client1",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": "http://localhost:9111/api/room/Strive"
+			},
+			"response": []
+		}
+	]
+}
