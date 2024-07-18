@@ -54,8 +54,8 @@ public class RoomController extends BaseController {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     public ResponseEntity<BaseResponse> bookRoom(@RequestHeader HttpHeaders headers, @NotNull @Valid @RequestBody Meeting meetingReq) throws ConferenceRoomException {
-        roomService.bookMeeting(meetingReq);
-        return ResponseEntity.ok(BaseResponse.builder().build());
+        Room booked = roomService.bookMeeting(meetingReq);
+        return ResponseEntity.ok(BaseResponse.builder().data(booked).build());
     }
 
     @PutMapping("/{roomName}/meeting/{meetingKey}")
@@ -63,8 +63,8 @@ public class RoomController extends BaseController {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     public ResponseEntity<BaseResponse> editRoomMeeting(@RequestHeader HttpHeaders headers, @PathVariable String roomName, @PathVariable String meetingKey, @NotNull @Valid @RequestBody Meeting meetingReq) throws ConferenceRoomException {
-        roomService.editMeeting(roomName, meetingKey, meetingReq);
-        return ResponseEntity.ok(BaseResponse.builder().build());
+        Room modified = roomService.editMeeting(roomName, meetingKey, meetingReq);
+        return ResponseEntity.ok(BaseResponse.builder().data(modified).build());
     }
 
     @DeleteMapping("/{roomName}/meeting/{meetingKey}")
@@ -72,8 +72,8 @@ public class RoomController extends BaseController {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     public ResponseEntity<BaseResponse> deleteMeeting(@RequestHeader HttpHeaders headers, @PathVariable String roomName, @PathVariable String meetingKey) throws ConferenceRoomException {
-        roomService.deleteMeeting(roomName, meetingKey);
-        return ResponseEntity.ok(BaseResponse.builder().build());
+        Room modified = roomService.deleteMeeting(roomName, meetingKey);
+        return ResponseEntity.ok(BaseResponse.builder().data(modified).build());
     }
 
 }

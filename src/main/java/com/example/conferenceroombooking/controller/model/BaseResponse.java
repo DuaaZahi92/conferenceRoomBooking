@@ -2,7 +2,6 @@ package com.example.conferenceroombooking.controller.model;
 
 
 import com.example.conferenceroombooking.exception.ConferenceRoomError;
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -17,7 +16,7 @@ import java.util.List;
 public class BaseResponse<T> implements Serializable {
     @JsonProperty("data")
     private T data;
-    @JsonProperty("status")
+    @JsonProperty(value = "status")
     private ResponseStatus status = ResponseStatus.OPERATION_SUCCESS;
     @JsonProperty("errors")
     private List<ConferenceRoomError> errors;

@@ -1,7 +1,7 @@
 package com.example.conferenceroombooking.repository;
 
 import com.example.conferenceroombooking.config.Properties;
-import com.example.conferenceroombooking.exception.ConferenceRoomError;
+import com.example.conferenceroombooking.exception.ConferenceRoomErrorEnum;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.room.interval.TimeInterval;
 import com.example.conferenceroombooking.room.interval.TimeIntervalOfFifteenMinutes;
@@ -40,13 +40,13 @@ public class RoomRepositoryImpl implements RoomRepository {
         List<Room> rooms = new ArrayList<>();
         Map<String, String> availableRoomsList = properties.getAvailableRooms();
         if (availableRoomsList == null)
-            throw new ConferenceRoomException(ConferenceRoomError.CONFIGURATION_ERROR, "Available rooms list configuration can't be null");
+            throw new ConferenceRoomException(ConferenceRoomErrorEnum.CONFIGURATION_ERROR, "Available rooms list configuration can't be null");
         for (Map.Entry<String, String> entry : availableRoomsList.entrySet()) {
             if (entry.getValue().isEmpty())
-                throw new ConferenceRoomException(ConferenceRoomError.CONFIGURATION_ERROR, "Room " + entry.getKey() + " configuration can't be null or empty");
+                throw new ConferenceRoomException(ConferenceRoomErrorEnum.CONFIGURATION_ERROR, "Room " + entry.getKey() + " configuration can't be null or empty");
             List<String> roomConfig = List.of(entry.getValue().split(","));
             if (roomConfig.size() < 2)
-                throw new ConferenceRoomException(ConferenceRoomError.CONFIGURATION_ERROR, "Room " + entry.getKey() + " configuration should include capacity and interval");
+                throw new ConferenceRoomException(ConferenceRoomErrorEnum.CONFIGURATION_ERROR, "Room " + entry.getKey() + " configuration should include capacity and interval");
             Integer capacity = Integer.parseInt(roomConfig.get(0));
             List<TimeInterval> maintenanceWindow = new ArrayList<>();
             try {
@@ -58,7 +58,7 @@ public class RoomRepositoryImpl implements RoomRepository {
                     maintenanceWindow.add(new TimeIntervalOfFifteenMinutes(start, end));
                 }
             } catch (Exception e) {
-                throw new ConferenceRoomException(ConferenceRoomError.CONFIGURATION_ERROR, "Room " + entry.getKey() + " has error while parsing maintenance intervals: " + e);
+                throw new ConferenceRoomException(ConferenceRoomErrorEnum.CONFIGURATION_ERROR, "Room " + entry.getKey() + " has error while parsing maintenance intervals: " + e);
             }
             Room room = roomFactory.getRoom(entry.getKey(), capacity, maintenanceWindow);
             rooms.add(room);

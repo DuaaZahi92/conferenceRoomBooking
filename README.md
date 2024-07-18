@@ -7,7 +7,8 @@ http://localhost:9111/swagger-ui/index.html#/
 * with Docker: 
 ```bash
     docker-compose build
-    
+    docker build -t duaazahi/conference-room-booking:0.0.1 --no-cache .
+    docker run --name conference-room-booking -p 9111:9111 duaazahi/conference-room-booking:0.0.1
 ```
 
 * without docker: 

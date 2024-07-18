@@ -11,9 +11,9 @@ public interface RoomService {
 
     Room getRoomFromName(String roomName) throws ConferenceRoomException;
 
-    void bookMeeting(Meeting meetingReq) throws ConferenceRoomException;
+    Room bookMeeting(Meeting meetingReq) throws ConferenceRoomException;
 
-    void editMeeting(String roomName, String meetingKey, Meeting meetingReq) throws ConferenceRoomException;
+    Room editMeeting(String roomName, String meetingKey, Meeting meetingReq) throws ConferenceRoomException;
 
-    void deleteMeeting(String roomName, String meetingKey) throws ConferenceRoomException;
+    Room deleteMeeting(String roomName, String meetingKey) throws ConferenceRoomException;
 }

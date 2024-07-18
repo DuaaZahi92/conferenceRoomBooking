@@ -1,6 +1,6 @@
 package com.example.conferenceroombooking.room.interval;
 
-import com.example.conferenceroombooking.exception.ConferenceRoomError;
+import com.example.conferenceroombooking.exception.ConferenceRoomErrorEnum;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -28,7 +28,7 @@ public class TimeIntervalOfFifteenMinutes extends TimeInterval {
         LocalTime endTime = LocalTime.parse(end,dtf);
         long minutesDifference = startTime.until(endTime, java.time.temporal.ChronoUnit.MINUTES);
         if (minutesDifference % 15 != 0)
-            throw new ConferenceRoomException(ConferenceRoomError.INVALID_VALUE, "End time has to be multiples of 15 minutes of start time");
+            throw new ConferenceRoomException(ConferenceRoomErrorEnum.INVALID_VALUE, "End time has to be multiples of 15 minutes of start time");
     }
 
 }

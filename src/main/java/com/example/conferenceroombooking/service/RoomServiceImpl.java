@@ -1,6 +1,6 @@
 package com.example.conferenceroombooking.service;
 
-import com.example.conferenceroombooking.exception.ConferenceRoomError;
+import com.example.conferenceroombooking.exception.ConferenceRoomErrorEnum;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.repository.RoomRepository;
 import com.example.conferenceroombooking.room.Meeting;
@@ -34,32 +34,35 @@ public class RoomServiceImpl implements RoomService {
         Room found = rooms.stream().filter(r -> r.getName().equalsIgnoreCase(roomName))
                 .findFirst().orElse(null);
         if (found == null)
-            throw new ConferenceRoomException(ConferenceRoomError.INVALID_VALUE, "Not able to find room with name " + roomName);
+            throw new ConferenceRoomException(ConferenceRoomErrorEnum.INVALID_VALUE, "Not able to find room with name " + roomName);
         return found;
     }
 
     @Override
-    public void bookMeeting(Meeting meetingReq) throws ConferenceRoomException {
+    public Room bookMeeting(Meeting meetingReq) throws ConferenceRoomException {
         RoomSelectionStrategy roomSelectionStrategy = RoomSelectionStrategyFactory.getRoomSelectionStrategy(meetingReq);
         List<Room> rooms = roomRepository.getRoomList();
         Room selectedRoom = roomSelectionStrategy.selectRoomForMeeting(rooms, meetingReq);
         selectedRoom.bookRoom(meetingReq);
         roomChangeNotification.setRoomUpdates(selectedRoom,meetingReq.getKey(),"bookMeeting");
+        return selectedRoom;
     }
 
     @Override
-    public void editMeeting(String roomName, String meetingKey, Meeting meetingReq) throws ConferenceRoomException {
+    public Room editMeeting(String roomName, String meetingKey, Meeting meetingReq) throws ConferenceRoomException {
         Room found = getRoomFromName(roomName);
         // book the new meeting
-        bookMeeting(meetingReq);
+        Room room = bookMeeting(meetingReq);
         // remove the old meeting
         deleteMeeting(found.getName(), meetingReq.getKey());
+        return room;
     }
 
     @Override
-    public void deleteMeeting(String roomName, String meetingKey) throws ConferenceRoomException {
+    public Room deleteMeeting(String roomName, String meetingKey) throws ConferenceRoomException {
         Room found = getRoomFromName(roomName);
         found.removeMeeting(meetingKey);
         roomChangeNotification.setRoomUpdates(found,meetingKey,"deleteMeeting");
+        return found;
     }
 }

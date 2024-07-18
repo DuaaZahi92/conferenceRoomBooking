@@ -3,11 +3,13 @@ package com.example.conferenceroombooking.controller.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Getter
 public enum ResponseStatus implements Serializable {
     @JsonEnumDefaultValue
     OPERATION_SUCCESS( "Operation Successful"),

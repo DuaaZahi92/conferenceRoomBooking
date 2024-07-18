@@ -1,12 +1,11 @@
 package com.example.conferenceroombooking.room.rooms;
 
-import com.example.conferenceroombooking.exception.ConferenceRoomError;
+import com.example.conferenceroombooking.exception.ConferenceRoomErrorEnum;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.room.interval.TimeInterval;
 import com.example.conferenceroombooking.room.Meeting;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Data;
 import lombok.Getter;
 
 import java.util.Map;
@@ -47,7 +46,7 @@ public class ConferenceRoom implements Room {
     public void bookRoom(Meeting meeting) throws ConferenceRoomException {
         Boolean isAvailable = isAvailable(meeting.getInterval());
         if (!isAvailable)
-            throw new ConferenceRoomException(ConferenceRoomError.NOT_ALLOWED, "Meeting overlaps with another meeting");
+            throw new ConferenceRoomException(ConferenceRoomErrorEnum.NOT_ALLOWED, "Meeting overlaps with another meeting");
         this.meetingsOfTheDay.put(meeting.getKey(), meeting);
     }
 
@@ -55,7 +54,7 @@ public class ConferenceRoom implements Room {
     public void removeMeeting(String meetingKey) throws ConferenceRoomException {
         Meeting removed = this.meetingsOfTheDay.remove(meetingKey);
         if (removed == null)
-            throw new ConferenceRoomException(ConferenceRoomError.INVALID_VALUE, "Meeting with key " + meetingKey + " doesn't exist in room: " + this.name);
+            throw new ConferenceRoomException(ConferenceRoomErrorEnum.INVALID_VALUE, "Meeting with key " + meetingKey + " doesn't exist in room: " + this.name);
     }
 
 }

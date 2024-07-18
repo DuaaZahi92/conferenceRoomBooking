@@ -4,11 +4,10 @@ import lombok.Data;
 
 @Data
 public class ConferenceRoomException extends Exception {
-    private ConferenceRoomError error;
+    private ConferenceRoomErrorEnum error;
 
-    public ConferenceRoomException(ConferenceRoomError error, String message) {
+    public ConferenceRoomException(ConferenceRoomErrorEnum error, String message) {
         super(message);
         this.error = error;
-        this.error.setMessage(this.error.getMessage() + ". " + message);
     }
 }
