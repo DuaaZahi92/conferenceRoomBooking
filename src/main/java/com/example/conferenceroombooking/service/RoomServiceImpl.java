@@ -4,6 +4,7 @@ import com.example.conferenceroombooking.exception.ConferenceRoomErrorEnum;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.repository.RoomRepository;
 import com.example.conferenceroombooking.room.Meeting;
+import com.example.conferenceroombooking.room.interval.TimeInterval;
 import com.example.conferenceroombooking.room.rooms.Room;
 import com.example.conferenceroombooking.room.selectionStrategy.RoomSelectionStrategy;
 import com.example.conferenceroombooking.room.selectionStrategy.RoomSelectionStrategyFactory;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,8 +25,17 @@ public class RoomServiceImpl implements RoomService {
     RoomChangeNotification roomChangeNotification;
 
     @Override
-    public List<Room> getAvailableRooms() throws ConferenceRoomException {
+    public List<Room> getAvailableRooms(TimeInterval interval) throws ConferenceRoomException {
         List<Room> rooms = roomRepository.getRoomList();
+        if (interval != null) {
+            return rooms.stream().filter(room -> {
+                try {
+                    return room.isAvailable(interval);
+                } catch (ConferenceRoomException e) {
+                    throw new RuntimeException(e);
+                }
+            }).collect(Collectors.toList());
+        }
         return rooms;
     }
 

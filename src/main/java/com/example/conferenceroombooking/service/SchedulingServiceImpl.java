@@ -35,7 +35,7 @@ public class SchedulingServiceImpl implements SchedulingService {
     }
 
     private void meetingReminder() throws ConferenceRoomException {
-        List<Room> availableRooms = roomService.getAvailableRooms();
+        List<Room> availableRooms = roomService.getAvailableRooms(null);
         for (Room availableRoom : availableRooms) {
             for (Map.Entry<String, Meeting> meetingEntry : availableRoom.getMeetingsOfTheDay().entrySet()) {
                 TimeIntervalOfFifteenMinutes interval = meetingEntry.getValue().getInterval();
@@ -50,7 +50,7 @@ public class SchedulingServiceImpl implements SchedulingService {
     }
 
     private void clearRoomsMeetings() throws ConferenceRoomException {
-        List<Room> availableRooms = roomService.getAvailableRooms();
+        List<Room> availableRooms = roomService.getAvailableRooms(null);
         for (Room availableRoom : availableRooms) {
             availableRoom.getMeetingsOfTheDay().clear();
             log.info("Cleared room {} of meetings.", availableRoom.getName());

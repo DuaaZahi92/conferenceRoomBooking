@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"interval\": {\n        \"start\": \"22:00\", //meeting start time in HH:MM format ( assuming same day and timezone of the office)\n        \"end\": \"23:30\" //meeting end time in HH:MM format ( assuming same day and timezone of the office)\n    },\n    \"attendeeNumber\": 3, // number of attendees. minimum 1, maximum 20\n    // \"roomPreference\": \"Strive\",  // optional parameter. if this room is available book it. if not given the system will choose best suited room. \n    \"title\": \"Onboarding of new hire\", // optional parameter. meeting title \n    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\" // optional parameter.  meeting description.\n}",
+					"raw": "{\n    \"interval\": {\n        \"start\": \"12:00\", //meeting start time in HH:MM format ( assuming same day and timezone of the office)\n        \"end\": \"12:30\" //meeting end time in HH:MM format ( assuming same day and timezone of the office)\n    },\n    \"attendeeNumber\": 7, // number of attendees. minimum 1, maximum 20\n    // \"roomPreference\": \"Strive\",  // optional parameter. if this room is available book it. if not given the system will choose best suited room. \n    \"title\": \"Onboarding of new hire\", // optional parameter. meeting title \n    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\" // optional parameter.  meeting description.\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -522,7 +522,25 @@
 						"type": "text"
 					}
 				],
-				"url": "http://localhost:9111/api/room"
+				"url": {
+					"raw": "http://localhost:9111/api/room",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9111",
+					"path": [
+						"api",
+						"room"
+					],
+					"query": [
+						{
+							"key": "interval",
+							"value": "12:00_12:30",
+							"disabled": true
+						}
+					]
+				}
 			},
 			"response": [
 				{
@@ -573,6 +591,72 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"data\": [\n        {\n            \"name\": \"Amaze\",\n            \"maxCapacity\": 3,\n            \"meetingsOfTheDay\": {\n                \"13:15_13:30\": {\n                    \"key\": \"13:15_13:30\",\n                    \"interval\": {\n                        \"start\": \"13:15\",\n                        \"end\": \"13:30\"\n                    },\n                    \"attendeeNumber\": 3,\n                    \"title\": \"Onboarding of new hire\",\n                    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n                },\n                \"13:30_14:00\": {\n                    \"key\": \"13:30_14:00\",\n                    \"interval\": {\n                        \"start\": \"13:30\",\n                        \"end\": \"14:00\"\n                    },\n                    \"attendeeNumber\": 3,\n                    \"title\": \"Onboarding of new hire\",\n                    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n                },\n                \"15:00_16:00\": {\n                    \"key\": \"15:00_16:00\",\n                    \"interval\": {\n                        \"start\": \"15:00\",\n                        \"end\": \"16:00\"\n                    },\n                    \"attendeeNumber\": 3,\n                    \"title\": \"Onboarding of new hire\",\n                    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n                }\n            },\n            \"maintenanceTimeIntervals\": [\n                {\n                    \"start\": \"09:00\",\n                    \"end\": \"09:15\"\n                },\n                {\n                    \"start\": \"13:00\",\n                    \"end\": \"13:15\"\n                },\n                {\n                    \"start\": \"17:00\",\n                    \"end\": \"17:15\"\n                }\n            ]\n        },\n        {\n            \"name\": \"Beauty\",\n            \"maxCapacity\": 7,\n            \"meetingsOfTheDay\": {\n                \"15:00_16:00\": {\n                    \"key\": \"15:00_16:00\",\n                    \"interval\": {\n                        \"start\": \"15:00\",\n                        \"end\": \"16:00\"\n                    },\n                    \"attendeeNumber\": 7,\n                    \"title\": \"Onboarding of new hire\",\n                    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n                }\n            },\n            \"maintenanceTimeIntervals\": [\n                {\n                    \"start\": \"09:00\",\n                    \"end\": \"09:15\"\n                },\n                {\n                    \"start\": \"13:00\",\n                    \"end\": \"13:15\"\n                },\n                {\n                    \"start\": \"17:00\",\n                    \"end\": \"17:15\"\n                }\n            ]\n        },\n        {\n            \"name\": \"Inspire\",\n            \"maxCapacity\": 12,\n            \"meetingsOfTheDay\": {},\n            \"maintenanceTimeIntervals\": [\n                {\n                    \"start\": \"09:00\",\n                    \"end\": \"09:15\"\n                },\n                {\n                    \"start\": \"13:00\",\n                    \"end\": \"13:15\"\n                },\n                {\n                    \"start\": \"17:00\",\n                    \"end\": \"17:15\"\n                }\n            ]\n        },\n        {\n            \"name\": \"Strive\",\n            \"maxCapacity\": 20,\n            \"meetingsOfTheDay\": {\n                \"22:00_23:30\": {\n                    \"key\": \"22:00_23:30\",\n                    \"interval\": {\n                        \"start\": \"22:00\",\n                        \"end\": \"23:30\"\n                    },\n                    \"attendeeNumber\": 3,\n                    \"roomPreference\": \"Strive\",\n                    \"title\": \"Onboarding of new hire\",\n                    \"description\": \"New hire Ahmad joined our team. This is the first meeting of the onboarding process. Welcome to the team!\"\n                }\n            },\n            \"maintenanceTimeIntervals\": [\n                {\n                    \"start\": \"09:00\",\n                    \"end\": \"09:15\"\n                },\n                {\n                    \"start\": \"13:00\",\n                    \"end\": \"13:15\"\n                },\n                {\n                    \"start\": \"17:00\",\n                    \"end\": \"17:15\"\n                }\n            ]\n        }\n    ]\n}"
+				},
+				{
+					"name": "success - get meeting rooms that are available",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "client1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:9111/api/room?interval=12:00_12:30",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9111",
+							"path": [
+								"api",
+								"room"
+							],
+							"query": [
+								{
+									"key": "interval",
+									"value": "12:00_12:30"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "vary",
+							"value": "accept-encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Jul 2024 19:51:04 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"name\": \"Amaze\",\n            \"maxCapacity\": 3,\n            \"meetingsOfTheDay\": {},\n            \"maintenanceTimeIntervals\": [\n                {\n                    \"start\": \"09:00\",\n                    \"end\": \"09:15\"\n                },\n                {\n                    \"start\": \"13:00\",\n                    \"end\": \"13:15\"\n                },\n                {\n                    \"start\": \"17:00\",\n                    \"end\": \"17:15\"\n                }\n            ]\n        },\n        {\n            \"name\": \"Inspire\",\n            \"maxCapacity\": 12,\n            \"meetingsOfTheDay\": {},\n            \"maintenanceTimeIntervals\": [\n                {\n                    \"start\": \"09:00\",\n                    \"end\": \"09:15\"\n                },\n                {\n                    \"start\": \"13:00\",\n                    \"end\": \"13:15\"\n                },\n                {\n                    \"start\": \"17:00\",\n                    \"end\": \"17:15\"\n                }\n            ]\n        },\n        {\n            \"name\": \"Strive\",\n            \"maxCapacity\": 20,\n            \"meetingsOfTheDay\": {},\n            \"maintenanceTimeIntervals\": [\n                {\n                    \"start\": \"09:00\",\n                    \"end\": \"09:15\"\n                },\n                {\n                    \"start\": \"13:00\",\n                    \"end\": \"13:15\"\n                },\n                {\n                    \"start\": \"17:00\",\n                    \"end\": \"17:15\"\n                }\n            ]\n        }\n    ]\n}"
 				}
 			]
 		},
