@@ -28,8 +28,6 @@ public class SchedulingServiceImpl implements SchedulingService {
         log.debug("Running job every minute");
         meetingReminder();
         LocalDateTime now = LocalDateTime.now();
-        now.withHour(0);
-        now.withMinute(0);
         if (now.getHour() == 0 && now.getMinute() == 0) {
             log.debug("It's start of new day. clear the meetings lists in all rooms");
             clearRoomsMeetings();
