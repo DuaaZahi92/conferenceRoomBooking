@@ -1,17 +1,14 @@
 package com.example.conferenceroombooking.room;
 
-import com.example.conferenceroombooking.interval.Interval;
-import com.example.conferenceroombooking.interval.TimeIntervalOfFifteenMinutes;
+import com.example.conferenceroombooking.room.interval.TimeIntervalOfFifteenMinutes;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,6 +30,8 @@ public class Meeting implements Serializable {
     private String title;
     @JsonProperty("description")
     private String description;
+    @JsonProperty("attendeeList")
+    private List<Attendee> attendeeList;
 
     public String getKey() {
         return this.key = this.interval.getStart() + "_" + this.interval.getEnd();

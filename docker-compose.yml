@@ -1,0 +1,9 @@
+services:
+  conference-room-booking:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9111:9111"
+    environment:
+      - JAVA_OPTS=-XX:+UseG1GC -Xmx1024m

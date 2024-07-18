@@ -1,4 +1,4 @@
-package com.example.conferenceroombooking.interval;
+package com.example.conferenceroombooking.room.interval;
 
 import com.example.conferenceroombooking.exception.ConferenceRoomError;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
@@ -6,12 +6,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)

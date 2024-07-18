@@ -3,6 +3,7 @@ package com.example.conferenceroombooking.exception;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -22,6 +23,7 @@ public enum ConferenceRoomError implements Serializable {
 
     private Integer httpStatusCode;
 
+    @Setter
     private String message;
 
     private ConferenceRoomError(Integer code, Integer httpStatusCode, String message) {

@@ -5,7 +5,6 @@ import com.example.conferenceroombooking.room.Meeting;
 import com.example.conferenceroombooking.room.rooms.Room;
 
 import java.util.List;
-import java.util.Map;
 
 public interface RoomService {
     List<Room> getAvailableRooms() throws ConferenceRoomException;
@@ -14,7 +13,7 @@ public interface RoomService {
 
     void bookMeeting(Meeting meetingReq) throws ConferenceRoomException;
 
-    void editRoomMeeting(String roomName, String meetingKey, Meeting meetingReq) throws ConferenceRoomException;
+    void editMeeting(String roomName, String meetingKey, Meeting meetingReq) throws ConferenceRoomException;
 
-    void deleteRoomMeeting(String roomName, String meetingKey) throws ConferenceRoomException;
+    void deleteMeeting(String roomName, String meetingKey) throws ConferenceRoomException;
 }

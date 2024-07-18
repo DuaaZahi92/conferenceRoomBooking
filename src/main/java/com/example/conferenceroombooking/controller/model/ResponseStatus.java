@@ -1,6 +1,7 @@
 package com.example.conferenceroombooking.controller.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum ResponseStatus implements Serializable {
+    @JsonEnumDefaultValue
     OPERATION_SUCCESS( "Operation Successful"),
     OPERATION_FAIL("Operation Failed"),
     ;

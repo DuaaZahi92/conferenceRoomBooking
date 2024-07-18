@@ -12,13 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
 public class RoomServiceImpl implements RoomService {
     @Autowired
     RoomRepository roomRepository;
+
+    @Autowired
+    RoomChangeNotification roomChangeNotification;
+
     @Override
     public List<Room> getAvailableRooms() throws ConferenceRoomException {
         List<Room> rooms = roomRepository.getRoomList();
@@ -41,22 +44,22 @@ public class RoomServiceImpl implements RoomService {
         List<Room> rooms = roomRepository.getRoomList();
         Room selectedRoom = roomSelectionStrategy.selectRoomForMeeting(rooms, meetingReq);
         selectedRoom.bookRoom(meetingReq);
+        roomChangeNotification.setRoomUpdates(selectedRoom,meetingReq.getKey(),"bookMeeting");
     }
 
     @Override
-    public void editRoomMeeting(String roomName, String meetingKey, Meeting meetingReq) throws ConferenceRoomException {
+    public void editMeeting(String roomName, String meetingKey, Meeting meetingReq) throws ConferenceRoomException {
         Room found = getRoomFromName(roomName);
-        Meeting existingMeeting = found.getMeetingsOfTheDay().get(meetingKey);
-        if (existingMeeting == null)
-            throw new ConferenceRoomException(ConferenceRoomError.INVALID_VALUE, "Meeting with key " + meetingKey + " doesn't exist in room: " + roomName);
+        // book the new meeting
         bookMeeting(meetingReq);
-        // if new meeting was booking, remove the old meeting
-        found.getMeetingsOfTheDay().remove(meetingKey);
+        // remove the old meeting
+        deleteMeeting(found.getName(), meetingReq.getKey());
     }
 
     @Override
-    public void deleteRoomMeeting(String roomName, String meetingKey) throws ConferenceRoomException {
+    public void deleteMeeting(String roomName, String meetingKey) throws ConferenceRoomException {
         Room found = getRoomFromName(roomName);
-        found.getMeetingsOfTheDay().remove(meetingKey);
+        found.removeMeeting(meetingKey);
+        roomChangeNotification.setRoomUpdates(found,meetingKey,"deleteMeeting");
     }
 }

@@ -1,4 +1,4 @@
-package com.example.conferenceroombooking.interval;
+package com.example.conferenceroombooking.room.interval;
 
 import com.example.conferenceroombooking.exception.ConferenceRoomError;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
@@ -13,9 +13,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Data
-public class Interval {
+public class TimeInterval {
     @JsonCreator
-    public Interval(String start, String end) throws ConferenceRoomException {
+    public TimeInterval(String start, String end) throws ConferenceRoomException {
         this.start = start;
         this.end = end;
         LocalTime startTime = LocalTime.parse(start,dtf);
@@ -36,11 +36,11 @@ public class Interval {
     @Pattern(regexp = "^([01]\\d|2[0-3]):([0-5]\\d)$\n", message = "Interval End time Should match the format HH:MM")
     protected String end;
 
-    public Boolean isOverlaps(Interval anotherInterval) {
+    public Boolean isOverlaps(TimeInterval anotherTimeInterval) {
         LocalTime startTime1 = LocalTime.parse(this.start,dtf);
         LocalTime endTime1 = LocalTime.parse(this.end,dtf);
-        LocalTime startTime2 = LocalTime.parse(anotherInterval.start,dtf);
-        LocalTime endTime2 = LocalTime.parse(anotherInterval.end,dtf);
+        LocalTime startTime2 = LocalTime.parse(anotherTimeInterval.start,dtf);
+        LocalTime endTime2 = LocalTime.parse(anotherTimeInterval.end,dtf);
 
         // Check if interval1 overlaps interval2
         boolean interval1OverlapsInterval2 = startTime1.isBefore(endTime2) && endTime1.isAfter(startTime2);

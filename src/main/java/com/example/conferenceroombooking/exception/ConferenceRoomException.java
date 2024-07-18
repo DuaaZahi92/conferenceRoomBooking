@@ -9,5 +9,6 @@ public class ConferenceRoomException extends Exception {
     public ConferenceRoomException(ConferenceRoomError error, String message) {
         super(message);
         this.error = error;
+        this.error.setMessage(this.error.getMessage() + ". " + message);
     }
 }

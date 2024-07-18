@@ -1,7 +1,6 @@
 package com.example.conferenceroombooking.controller;
 
 import com.example.conferenceroombooking.controller.model.BaseResponse;
-import com.example.conferenceroombooking.exception.ConferenceRoomError;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
 import com.example.conferenceroombooking.room.Meeting;
 import com.example.conferenceroombooking.room.rooms.Room;
@@ -55,8 +54,6 @@ public class RoomController extends BaseController {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     public ResponseEntity<BaseResponse> bookRoom(@RequestHeader HttpHeaders headers, @NotNull @Valid @RequestBody Meeting meetingReq) throws ConferenceRoomException {
-        //TODO put the full date and verification that he can only book for today/
-        //TODO how you will clear the list when the day rolls
         roomService.bookMeeting(meetingReq);
         return ResponseEntity.ok(BaseResponse.builder().build());
     }
@@ -66,7 +63,7 @@ public class RoomController extends BaseController {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     public ResponseEntity<BaseResponse> editRoomMeeting(@RequestHeader HttpHeaders headers, @PathVariable String roomName, @PathVariable String meetingKey, @NotNull @Valid @RequestBody Meeting meetingReq) throws ConferenceRoomException {
-        roomService.editRoomMeeting(roomName, meetingKey, meetingReq);
+        roomService.editMeeting(roomName, meetingKey, meetingReq);
         return ResponseEntity.ok(BaseResponse.builder().build());
     }
 
@@ -75,7 +72,7 @@ public class RoomController extends BaseController {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     public ResponseEntity<BaseResponse> deleteMeeting(@RequestHeader HttpHeaders headers, @PathVariable String roomName, @PathVariable String meetingKey) throws ConferenceRoomException {
-        roomService.deleteRoomMeeting(roomName, meetingKey);
+        roomService.deleteMeeting(roomName, meetingKey);
         return ResponseEntity.ok(BaseResponse.builder().build());
     }
 

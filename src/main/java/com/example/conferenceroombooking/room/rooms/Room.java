@@ -1,11 +1,10 @@
 package com.example.conferenceroombooking.room.rooms;
 
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
-import com.example.conferenceroombooking.interval.Interval;
+import com.example.conferenceroombooking.room.interval.TimeInterval;
 import com.example.conferenceroombooking.room.Meeting;
 import jakarta.validation.constraints.*;
 
-import java.util.List;
 import java.util.Map;
 
 public interface Room {
@@ -24,9 +23,9 @@ public interface Room {
     @Max(255)
     String getLocation();
 
-    Boolean isAvailable(Interval interval) throws ConferenceRoomException;
+    Boolean isAvailable(TimeInterval timeInterval) throws ConferenceRoomException;
 
     void bookRoom(Meeting meeting) throws ConferenceRoomException;
 
-
+    void removeMeeting(String meetingKey) throws ConferenceRoomException;
 }

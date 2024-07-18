@@ -3,8 +3,8 @@ package com.example.conferenceroombooking.repository;
 import com.example.conferenceroombooking.config.Properties;
 import com.example.conferenceroombooking.exception.ConferenceRoomError;
 import com.example.conferenceroombooking.exception.ConferenceRoomException;
-import com.example.conferenceroombooking.interval.Interval;
-import com.example.conferenceroombooking.interval.TimeIntervalOfFifteenMinutes;
+import com.example.conferenceroombooking.room.interval.TimeInterval;
+import com.example.conferenceroombooking.room.interval.TimeIntervalOfFifteenMinutes;
 import com.example.conferenceroombooking.room.roomFactory.RoomFactory;
 import com.example.conferenceroombooking.room.rooms.Room;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class RoomRepositoryImpl implements RoomRepository {
             if (roomConfig.size() < 2)
                 throw new ConferenceRoomException(ConferenceRoomError.CONFIGURATION_ERROR, "Room " + entry.getKey() + " configuration should include capacity and interval");
             Integer capacity = Integer.parseInt(roomConfig.get(0));
-            List<Interval> maintenanceWindow = new ArrayList<>();
+            List<TimeInterval> maintenanceWindow = new ArrayList<>();
             try {
                 String[] intervals = roomConfig.get(1).split("\\|");
                 for (String interval : intervals) {
