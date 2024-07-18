@@ -1,7 +1,6 @@
 # Conference Room Booking app
 
-Swagger documentation:
-http://localhost:9111/swagger-ui/index.html#/
+
 
 ## To run the application:
 * with Docker: 
@@ -15,3 +14,10 @@ http://localhost:9111/swagger-ui/index.html#/
 mvn clean install
 java -jar target/conferenceRoomBooking-0.0.1.jar 
 ```
+
+## Http requests and examples: 
+
+* postman collection (attached in root) [Conference Room booking.postman_collection.json](./Conference%20Room%20booking.postman_collection.json)
+* Swagger documentation:
+http://localhost:9111/swagger-ui/index.html#/
+
