@@ -7,10 +7,13 @@ import com.example.conferenceroombooking.room.Meeting;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
+@Slf4j
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"name", "maxCapacity"})
 public class ConferenceRoom implements Room {
@@ -21,7 +24,7 @@ public class ConferenceRoom implements Room {
     @Getter
     String location;
     @Getter
-    protected Map<String,Meeting> meetingsOfTheDay = new ConcurrentHashMap<>();
+    protected Map<String,Meeting> meetingsOfTheDay = new ConcurrentSkipListMap<>();
 
     public ConferenceRoom(String name, Integer maxCapacity) {
         this.name = name;
@@ -47,7 +50,11 @@ public class ConferenceRoom implements Room {
         Boolean isAvailable = isAvailable(meeting.getInterval());
         if (!isAvailable)
             throw new ConferenceRoomException(ConferenceRoomErrorEnum.NOT_ALLOWED, "Meeting overlaps with another meeting");
-        this.meetingsOfTheDay.put(meeting.getKey(), meeting);
+        Meeting existingBooking = this.meetingsOfTheDay.putIfAbsent(meeting.getKey(), meeting);
+        if (existingBooking != null) {
+            log.warn("There is already an existing booking: {} in this slot", existingBooking.getKey());
+            throw new ConferenceRoomException(ConferenceRoomErrorEnum.NOT_ALLOWED, "Meeting overlaps with another meeting");
+        }
     }
 
     @Override
